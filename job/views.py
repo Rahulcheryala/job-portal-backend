@@ -80,7 +80,7 @@ class JobListView(generics.ListAPIView):
 
     def get_queryset(self):
         page = self.request.query_params.get('page')
-        print("Requested page:", page)
+        # print("Requested page:", page)
         queryset = Job.objects.all()
 
         # Filtering by job location

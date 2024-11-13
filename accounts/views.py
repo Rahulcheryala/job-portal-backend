@@ -238,7 +238,7 @@ class PasswordResetRequestView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         # Return a success response
-        return Response({"detail": "Password reset e-mail has been sent."}, status=status.HTTP_200_OK)
+        return Response({"detail": "Password reset link has been sent."}, status=status.HTTP_200_OK)
 
 
 # View for confirming password reset

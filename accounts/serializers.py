@@ -656,16 +656,18 @@ class ProfileSerializer(serializers.ModelSerializer):
                 job_seeker_profile, _ = JobSeekerProfile.objects.get_or_create(
                     user=instance)
 
-            # Handle education details
-            education_data = validated_data.get('education_details', [])
-            self.update_or_create_related(
-                job_seeker_profile, 'education_details', Education, education_data)
+            # Handle education details only if provided
+            if 'education_details' in validated_data:
+                education_data = validated_data.get('education_details', [])
+                self.update_or_create_related(
+                    job_seeker_profile, 'education_details', Education, education_data)
 
-            # Handle work experience details
-            work_experience_data = validated_data.get(
-                'work_experience_details', [])
-            self.update_or_create_related(
-                job_seeker_profile, 'work_experience_details', WorkExperience, work_experience_data)
+            # Handle work experience details only if provided
+            if 'work_experience_details' in validated_data:
+                work_experience_data = validated_data.get(
+                    'work_experience_details', [])
+                self.update_or_create_related(
+                    job_seeker_profile, 'work_experience_details', WorkExperience, work_experience_data)
 
         elif instance.account_type == 'job_hirer':
             job_hirer_data = validated_data.get('job_hirer_profile')
@@ -723,20 +725,18 @@ class PasswordResetRequestSerializer(serializers.Serializer):
         email = self.validated_data['email']
         user = CustomUser.objects.get(email=email)
         token = default_token_generator.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        # to redirect the frontend Reset-passwords page
-        frontend_url = f"http://{
-            settings.BASE_FRONTEND_URL}/reset-password/{uid}/{token}/"
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
-        # Example context data for the email
         context = {
-            'user_name': user.username,
-            'reset_link': frontend_url,  # The password reset URL
-            'company_name': 'CodeUnity',  # Your company name
+            'domain': settings.BASE_FRONTEND_URL,
+            'company_name': 'CodeUnity',
+            'username': user.username,
+            'uidb64': uidb64,
+            'token': token,
         }
 
         # Render the email body using the template
-        email_body = render_to_string('password_reset_email.html', context)
+        email_body = render_to_string('account/reset_password.html', context)
 
         # Send email
         send_mail(

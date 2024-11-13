@@ -42,6 +42,9 @@ ALLOWED_HOSTS = ['0.0.0.0',
                  '127.0.0.1',
                  '16.171.14.53']
 
+# Allow all host headers i.e., requests from all origins
+CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # Frontend URL
     # Add more origins as needed
@@ -212,7 +215,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = [
     'authorization',
     'content-type',

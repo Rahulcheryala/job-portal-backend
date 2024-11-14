@@ -39,8 +39,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0',
                  'localhost',
-                 '127.0.0.1',
-                 '16.171.14.53']
+                 '127.0.0.1']
 
 # Allow all host headers i.e., requests from all origins
 CORS_ALLOW_ALL_ORIGINS = True
@@ -125,18 +124,6 @@ DATABASES = {
         'PORT': config('DB_PORT', default='5432'),
     }
 }
-# DATABASES = {
-#     'default': {
-
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME':'job_portal_new',
-#         'USER':'postgres',
-#         'PASSWORD':'12345',
-#         'HOST':'localhost',
-#         'PORT': '5431',
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -255,3 +242,8 @@ SIMPLE_JWT = {
 DOMAIN = 'localhost:8000'  # Development domain
 SITE_NAME = 'Job Portal'
 SITE_ID = 1
+
+# Set your STATIC_URL and STATIC_ROOT
+STATIC_URL = '/static/'
+# or any other directory you prefer
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
